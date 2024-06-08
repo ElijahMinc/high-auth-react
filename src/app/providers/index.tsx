@@ -7,6 +7,7 @@ import { BrowserRouter } from './RouterProvider';
 import { withSuspense } from '@shared/lib';
 import { AuthProvider } from './AuthProvider';
 import { ToastContainer } from 'react-toastify';
+import { Spinner } from '@shared/index';
 
 function Providers() {
   return (
@@ -32,10 +33,9 @@ function Providers() {
 }
 
 const SuspensedProvider = withSuspense(Providers, {
-  fallback: <>loading</>,
+  fallback: <Spinner />,
 });
 
 export const Provider = withErrorBoundary(SuspensedProvider, {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  fallbackRender: ({ error }) => <>Error page</>,
+  fallbackRender: ({ error }) => <>{error}</>,
 });
