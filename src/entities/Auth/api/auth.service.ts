@@ -112,12 +112,8 @@ class AuthService extends CrudService {
     >(routeParams, '/refresh');
 
     if ('error' in response) {
-      toast.error(response.message);
-
       return null;
     }
-
-    toast.success(response.message);
 
     return response.data;
   }
