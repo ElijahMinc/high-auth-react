@@ -98,12 +98,8 @@ class AuthService extends CrudService {
     );
 
     if ('error' in response) {
-      toast.error(response.message);
-
       return null;
     }
-
-    toast.success(response.message);
 
     return response;
   }
