@@ -15,7 +15,7 @@ export const ResetPasswordFormW = () => {
   } = useResetPasswordMutation();
 
   if (!accessLink) {
-    return <Navigate to={`/${ROUTER_PATHS.AUTH}`} />;
+    return <Navigate to={`/${ROUTER_PATHS.AUTH}?page=signup`} />;
   }
 
   const onSubmit = async ({
@@ -25,7 +25,7 @@ export const ResetPasswordFormW = () => {
 
     if (!res) return;
 
-    navigate(`/${ROUTER_PATHS.AUTH}`);
+    navigate(`/${ROUTER_PATHS.AUTH}?page=signin`);
     toast.success('Please, sign in with your new password');
   };
 
