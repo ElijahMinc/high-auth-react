@@ -2,6 +2,8 @@ import { $authApi, localStorageAccessTokenKey } from '@shared/http/http.api';
 import { isAxiosError } from 'axios';
 import authService from './auth.service';
 
+let _isRetry = false;
+
 $authApi.interceptors.response.use(
   (res) => res,
   async (error) => {
@@ -10,9 +12,9 @@ $authApi.interceptors.response.use(
     if (
       isAxiosError(error) &&
       error.response?.status === 401 &&
-      !originalRequest._isRetry
+      !_isRetry
     ) {
-      originalRequest._isRetry = true;
+      _isRetry = true;
 
       try {
         const data = await authService.refreshTokens();
