@@ -1,0 +1,23 @@
+.auth {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+ 
+	height: 100%;
+ }
+ 
+ .auth__wrapper {
+	width: 100%;
+	max-width: 400px;
+	margin: 0 auto;
+ }
+ 
+ .title {
+	color: var(--primary);
+	font-weight: 700;
+	font-size: 36px;
+	text-align: center;
+ 
+	margin-bottom: 80px;
+ }
+ 

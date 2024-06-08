@@ -1,0 +1,76 @@
+@font-face {
+  font-family: "Basis Grotesque Pro";
+  src: url("./assets/fonts/BasisGrotesquePro-Light.ttf") format("ttf"),
+    url("./assets/fonts/BasisGrotesquePro-Light.woff") format("woff");
+  font-weight: 300;
+  font-style: normal;
+}
+@font-face {
+  font-family: "Basis Grotesque Pro";
+
+  src: url("./assets/fonts/BasisGrotesquePro-Regular.ttf") format("ttf"),
+    url("./assets/fonts/BasisGrotesquePro-Regular.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Basis Grotesque Pro";
+
+  src: url("./assets/fonts/BasisGrotesquePro-Medium.ttf") format("ttf"),
+    url("./assets/fonts/BasisGrotesquePro-Medium.woff") format("woff");
+  font-weight: 500;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "Basis Grotesque Pro";
+
+  src: url("./assets/fonts/BasisGrotesquePro-Bold.ttf") format("ttf"),
+    url("./assets/fonts/BasisGrotesquePro-Bold.woff") format("woff");
+
+  font-weight: 700;
+  font-style: normal;
+}
+
+:root {
+  /* FONTS */
+  --font-family: "Basis Grotesque Pro", sans-serif;
+
+  /* COLORS */
+  --primary: #316fea;
+  --black: #1a1919;
+  --white: #ffffff;
+  --lighter: #a1abb5;
+}
+
+html,
+body {
+  height: 100%;
+  font-family: var(--font-family);
+  background-color: var(--white);
+  color: var(--black);
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+#root {
+  min-height: 100%;
+}
+
+.wrapper {
+  height: 100%;
+
+  max-width: 1185px;
+  margin: 0 auto;
+
+  padding: 15px;
+}
+
+.primary {
+  color: var(--primary);
+}

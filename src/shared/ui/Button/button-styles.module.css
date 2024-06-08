@@ -1,0 +1,36 @@
+.button {
+  width: 100%;
+  outline: none;
+  border: none;
+  color: var(--black);
+  background-color: var(--white);
+
+  cursor: pointer;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  gap: 10px;
+
+  border: 1.2px solid #d3d8dc;
+  border-radius: 6px;
+  padding: 14px 0;
+
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 20px;
+
+  font-family: var(--font-family);
+}
+
+.button:disabled {
+  cursor: pointer;
+  background: var(--lighter);
+}
+
+.primary {
+  background-color: var(--primary);
+  color: var(--white);
+  border: none;
+}
