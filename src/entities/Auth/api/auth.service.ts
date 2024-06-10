@@ -28,8 +28,6 @@ class AuthService extends CrudService {
     >(data, routeParams, '/login');
 
     if ('error' in response) {
-      toast.error(response.message);
-
       return null;
     }
 
@@ -47,8 +45,6 @@ class AuthService extends CrudService {
     >(data, routeParams, '/registration');
 
     if ('error' in response) {
-      toast.error(response.message);
-
       return null;
     }
 

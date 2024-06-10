@@ -1,6 +1,23 @@
 import { useMutation, useQuery } from '@tanstack/react-query';
 import { AuthRequest, ResetPasswordRequest } from './auth.types';
 import authService from './auth.service';
+import axios from 'axios';
+
+export const getGoogleCredentialsByAccessToken = async (
+  googleAccessToken: string
+) => {
+  try {
+    const { data } = await axios.get(
+      'https://www.googleapis.com/oauth2/v3/userinfo',
+      {
+        headers: { Authorization: `Bearer ${googleAccessToken}` },
+      }
+    );
+    return data;
+  } catch (error) {
+    return null;
+  }
+};
 
 export const useLoginMutation = () => {
   const loginMutation = useMutation({

@@ -1,4 +1,4 @@
-import { ISignInFormProps } from './auth-form.types';
+import { ISignInFormProps, IThirdPartyAuth } from './auth-form.types';
 import {
   signInFormDefaultValues,
   signInFormSchema,
@@ -14,10 +14,12 @@ import { AuthRequest } from '@entities/Auth/api/auth.types';
 import { PasswordField } from '@entities/PasswordField';
 
 import styles from './auth-form-styles.module.css';
+import React from 'react';
 
 export const AuthForm = ({
   handleSubmit,
   currentPage,
+  thirdPartyAuths,
   isDisabledSubmitBtn = false,
 }: ISignInFormProps) => {
   const location = useLocation();
@@ -44,17 +46,19 @@ export const AuthForm = ({
   return (
     <Form className={styles.form} onSubmit={onSubmit}>
       <h2 className={styles.form__title}>{titleText}</h2>
-      <div className={styles.form__signin}>
-        <Button type="button">
-          <img src={GoogleIcon} />
-          Google
-        </Button>
-        <Button type="button">
-          <img src={GithubIcon} />
-          Github
-        </Button>
-      </div>
-      <div className={styles.sep}>or</div>
+      {!!thirdPartyAuths?.length && (
+        <>
+          <div className={styles.form__signin}>
+            {thirdPartyAuths.map((thirdPartyAuth) => (
+              <React.Fragment key={thirdPartyAuth.id}>
+                {thirdPartyAuth.Component}
+              </React.Fragment>
+            ))}
+          </div>
+          <div className={styles.sep}>or</div>
+        </>
+      )}
+
       <div className={styles.inputs}>
         <Input
           name="email"

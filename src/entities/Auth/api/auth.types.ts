@@ -4,7 +4,7 @@ export interface IUser {
   password: string;
 }
 
-export interface AuthRequest extends IUser {}
+export interface AuthRequest extends Omit<IUser, 'id'> {}
 
 export interface ResetPasswordRequest {
   accessLink: string;
