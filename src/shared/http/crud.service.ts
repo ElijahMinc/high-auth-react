@@ -1,5 +1,6 @@
 import { getQueryParams } from '@shared/http/http.lib';
 import { HttpRequest } from '@shared/http/http.service';
+import { AxiosRequestConfig } from 'axios';
 
 class CrudService {
   protected httpRequest: HttpRequest;
@@ -29,12 +30,16 @@ class CrudService {
     return await this.httpRequest.get<ReturnV>(routeParams, `${route}/${id}`);
   }
 
-  protected async get<ReturnV>(params: Record<string, unknown>, route: string) {
+  protected async get<ReturnV>(
+    params: Record<string, unknown>,
+    route: string,
+    options?: AxiosRequestConfig<any>
+  ) {
     const routeParams = getQueryParams({
       ...params,
     });
 
-    return await this.httpRequest.get<ReturnV>(routeParams, route);
+    return await this.httpRequest.get<ReturnV>(routeParams, route, options);
   }
 
   protected async create<TData, VoidR>(

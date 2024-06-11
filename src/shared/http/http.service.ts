@@ -57,10 +57,11 @@ export class HttpRequest {
 
   async get<ReturnV>(
     routeParams = '',
-    route = ''
+    route = '',
+    options = {}
   ): Promise<ReturnV | ErrorResponse> {
     return await this.$api
-      .get<void, AxiosResponse<ReturnV>>(this.url(route, routeParams))
+      .get<void, AxiosResponse<ReturnV>>(this.url(route, routeParams), options)
       .then(this.parseDataFromAxios.bind(this))
       .catch(this.processError.bind(this));
   }

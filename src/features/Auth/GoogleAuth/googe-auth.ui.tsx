@@ -13,9 +13,8 @@ export const GoogleAuth = ({ handleSubmit }: IGoogleProps) => {
         tokenResponse.access_token
       );
       const email = userInfo.email;
-      const password = userInfo.sub;
 
-      handleSubmit({ email, password });
+      handleSubmit({ email });
     },
   });
 

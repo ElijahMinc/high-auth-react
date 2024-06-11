@@ -2,6 +2,7 @@ import { useMutation, useQuery } from '@tanstack/react-query';
 import { AuthRequest, ResetPasswordRequest } from './auth.types';
 import authService from './auth.service';
 import axios from 'axios';
+import { localStorageAccessTokenKey } from '@shared/http/http.api';
 
 export const getGoogleCredentialsByAccessToken = async (
   googleAccessToken: string
@@ -41,6 +42,31 @@ export const useRegistrationMutation = () => {
   };
 };
 
+//!TODO Not completed; Don`t use it
+export const useLoginByOAuthGoogle = () => {
+  const loginByOAuthGoogle = useMutation({
+    mutationKey: [authService.uniqueName],
+    mutationFn: (data: Pick<AuthRequest, 'email'>) =>
+      authService.loginByOAuthGoogle(data),
+  });
+
+  return {
+    loginByOAuthGoogle,
+  };
+};
+
+export const useLoginByOAuthGithub = () => {
+  const loginByOAuthGoogle = useMutation({
+    mutationKey: [authService.uniqueName],
+    mutationFn: (data: Pick<AuthRequest, 'email'>) =>
+      authService.loginByOAuthGoogle(data),
+  });
+
+  return {
+    loginByOAuthGoogle,
+  };
+};
+
 export const useResetPasswordMutation = () => {
   const resetPassword = useMutation({
     mutationKey: [authService.uniqueName],
@@ -72,7 +98,8 @@ export const useCheckUserByJWTQuery = ({
   const checkUserByJWTQuery = useQuery({
     queryKey: ['user'],
     queryFn: async () => {
-      const res = await authService.checkValidateUserByJWT();
+      const accessToken = localStorage.getItem(localStorageAccessTokenKey);
+      const res = await authService.checkValidateUserByJWT(accessToken);
       return res;
     },
     enabled: isEnabled,

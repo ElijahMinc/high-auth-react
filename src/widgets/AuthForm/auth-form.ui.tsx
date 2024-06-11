@@ -1,5 +1,6 @@
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import {
+  useLoginByOAuthGoogle,
   useLoginMutation,
   useRegistrationMutation,
 } from '@entities/Auth/api/auth.queries';
@@ -14,10 +15,10 @@ import { IThirdPartyAuth } from '@features/Auth/AuthForm/auth-form.types';
 
 export const AuthFormW = () => {
   const [params] = useSearchParams();
+  const navigate = useNavigate();
+  const { setAuth } = useAuth();
 
   const currentPage = params.get('page') as Nullable<'signin' | 'signup'>;
-
-  const { setAuth } = useAuth();
 
   const {
     loginMutation: { isPending: isLoginPending, mutateAsync: loginFn },
@@ -30,7 +31,15 @@ export const AuthFormW = () => {
     },
   } = useRegistrationMutation();
 
-  const navigate = useNavigate();
+  const {
+    loginByOAuthGoogle: {
+      isPending: isLoginOAuthGoogle,
+      mutateAsync: loginByOAuthGoogleFn,
+    },
+  } = useLoginByOAuthGoogle();
+
+  const isLoading =
+    isLoginPending || isRegistrationPenging || isLoginOAuthGoogle;
 
   const onSubmit = async (data: AuthRequest) => {
     const res =
@@ -45,20 +54,10 @@ export const AuthFormW = () => {
     navigate(ROUTER_PATHS.HOME, { replace: true });
   };
 
-  const onSubmitByThirdPartyAuth = async (data: AuthRequest) => {
-    let isError = false;
-
-    const res = await registerFn(data);
+  const onSubmitGoogle = async (data: Pick<AuthRequest, 'email'>) => {
+    const res = await loginByOAuthGoogleFn(data);
 
     if (!res) {
-      const loginRes = await loginFn(data);
-
-      if (!loginRes) {
-        isError = true;
-      }
-    }
-
-    if (isError) {
       toast.error('Something went wrong');
 
       return;
@@ -69,18 +68,27 @@ export const AuthFormW = () => {
     navigate(ROUTER_PATHS.HOME, { replace: true });
   };
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  const onSubmitGithub = async (code: string) => {
+    console.log('code', code);
+  };
+
   const thirdPartyAuths: IThirdPartyAuth[] = [
     {
       id: 1,
-      Component: <GoogleAuth handleSubmit={onSubmitByThirdPartyAuth} />,
+      Component: <GoogleAuth handleSubmit={onSubmitGoogle} />,
     },
+    // {
+    //   id: 2,
+    //   Component: <GithubAuth handleSubmit={onSubmitGithub} />,
+    // },
   ];
 
   return (
     <AuthForm
       currentPage={currentPage ?? 'signup'}
       handleSubmit={onSubmit}
-      isDisabledSubmitBtn={isLoginPending || isRegistrationPenging}
+      isDisabledSubmitBtn={isLoading}
       thirdPartyAuths={thirdPartyAuths}
     />
   );
