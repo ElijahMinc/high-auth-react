@@ -56,14 +56,14 @@ export const useLoginByOAuthGoogle = () => {
 };
 
 export const useLoginByOAuthGithub = () => {
-  const loginByOAuthGoogle = useMutation({
+  const loginByOAuthGithub = useMutation({
     mutationKey: [authService.uniqueName],
-    mutationFn: (data: Pick<AuthRequest, 'email'>) =>
-      authService.loginByOAuthGoogle(data),
+    mutationFn: (code: string) =>
+      authService.loginByOAuthGithub(code),
   });
 
   return {
-    loginByOAuthGoogle,
+    loginByOAuthGithub,
   };
 };
 

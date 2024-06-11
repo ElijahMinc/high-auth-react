@@ -68,7 +68,6 @@ export const AuthFormW = () => {
     navigate(ROUTER_PATHS.HOME, { replace: true });
   };
 
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const onSubmitGithub = async (code: string) => {
     console.log('code', code);
   };
