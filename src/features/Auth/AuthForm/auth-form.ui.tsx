@@ -1,12 +1,10 @@
-import { ISignInFormProps, IThirdPartyAuth } from './auth-form.types';
+import { ISignInFormProps } from './auth-form.types';
 import {
   signInFormDefaultValues,
   signInFormSchema,
 } from './constants/auth-form.constants';
 
 import { Link, useLocation } from 'react-router-dom';
-import GithubIcon from '@shared/assets/github.svg';
-import GoogleIcon from '@shared/assets/google.svg';
 import { useForm } from '@shared/lib/hooks/form';
 import { Button, Form, Input } from '@shared/index';
 import { ROUTER_PATHS } from '@shared/lib/react-router/config';
@@ -38,6 +36,7 @@ export const AuthForm = ({
     },
     schema: signInFormSchema,
     initialValues: signInFormDefaultValues,
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }) as any;
 
   const titleText =

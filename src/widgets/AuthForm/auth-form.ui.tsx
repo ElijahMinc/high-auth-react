@@ -68,9 +68,10 @@ export const AuthFormW = () => {
     navigate(ROUTER_PATHS.HOME, { replace: true });
   };
 
-  const onSubmitGithub = async (code: string) => {
-    console.log('code', code);
-  };
+  //!TODO Auth through Github. Not complete yet
+  // const onSubmitGithub = async (code: string) => {
+  //   console.log('code', code);
+  // };
 
   const thirdPartyAuths: IThirdPartyAuth[] = [
     {
