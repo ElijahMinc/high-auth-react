@@ -58,8 +58,7 @@ export const useLoginByOAuthGoogle = () => {
 export const useLoginByOAuthGithub = () => {
   const loginByOAuthGithub = useMutation({
     mutationKey: [authService.uniqueName],
-    mutationFn: (code: string) =>
-      authService.loginByOAuthGithub(code),
+    mutationFn: (code: string) => authService.loginByOAuthGithub(code),
   });
 
   return {
@@ -107,5 +106,21 @@ export const useCheckUserByJWTQuery = ({
 
   return {
     checkUserByJWTQuery,
+  };
+};
+
+export const useLogoutQuery = ({
+  isEnabled = true,
+}: {
+  isEnabled: boolean;
+}) => {
+  const logout = useQuery({
+    queryKey: ['user'],
+    queryFn: async () => await authService.logout(),
+    enabled: isEnabled,
+  });
+
+  return {
+    logout,
   };
 };

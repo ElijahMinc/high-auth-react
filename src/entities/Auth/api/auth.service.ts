@@ -164,15 +164,18 @@ class AuthService extends CrudService {
   async logout() {
     const routeParams = {};
 
-    const response = await this.get<
-      SuccessResponse<{ accessToken: string; refreshToken: string }>
-    >(routeParams, '/refresh');
+    const response = await this.get<SuccessResponse<null>>(
+      routeParams,
+      '/logout'
+    );
 
     if ('error' in response) {
       toast.error(response.message);
 
       return null;
     }
+
+    localStorage.removeItem(localStorageAccessTokenKey);
 
     toast.success(response.message);
 

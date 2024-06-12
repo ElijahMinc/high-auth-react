@@ -1,0 +1,21 @@
+.wrapper h1 {
+  text-align: center;
+}
+
+.actions {
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.btns {
+  display: flex;
+  flex-direction: column;
+
+  flex: 0 1 250px;
+
+}
+
+.btns button {
+
+}
