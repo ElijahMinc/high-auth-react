@@ -136,6 +136,7 @@ class AuthService extends CrudService {
         headers: {
           Authorization: 'Bearer ' + accessToken,
         },
+        withCredentials: true,
       }
     );
 
