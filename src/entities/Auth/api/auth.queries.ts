@@ -95,7 +95,7 @@ export const useCheckUserByJWTQuery = ({
   isEnabled: boolean;
 }) => {
   const checkUserByJWTQuery = useQuery({
-    queryKey: ['user'],
+    queryKey: ['checkUser'],
     queryFn: async () => {
       const accessToken = localStorage.getItem(localStorageAccessTokenKey);
       const res = await authService.checkValidateUserByJWT(accessToken);

@@ -4,8 +4,8 @@ import {
   useLogoutQuery,
 } from '@entities/Auth/api/auth.queries';
 import { IUser } from '@entities/Auth/api/auth.types';
-import { isAuthPage } from '@entities/Auth/constants/is-auth-page.constant';
 import { localStorageAccessTokenKey } from '@shared/http/http.api';
+import { ROUTER_PATHS } from '@shared/lib/react-router/config';
 import { Nullable } from '@shared/types/nullable.type';
 import { useEffect, useMemo, useState } from 'react';
 
@@ -14,6 +14,10 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
     !!localStorage.getItem(localStorageAccessTokenKey)
   );
   const [user, setUser] = useState<Nullable<IUser>>(null);
+
+  const isAuthPages = window.location.pathname.includes(
+    `/${ROUTER_PATHS.AUTH}`
+  );
 
   const {
     checkUserByJWTQuery: {
@@ -24,7 +28,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
       isSuccess: isCheckUserSuccess,
     },
   } = useCheckUserByJWTQuery({
-    isEnabled: !isAuthPage,
+    isEnabled: !isAuthPages,
   });
 
   const {
@@ -52,7 +56,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
   };
 
   useEffect(() => {
-    if (isAuthPage) return;
+    if (isAuthPages) return;
     if (isAuthLoading) return;
 
     if (isCheckUserError) {
@@ -67,7 +71,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
 
     setUser(user);
     setAuth(true);
-  }, [isCheckUserError, isCheckUserSuccess, data, isAuthLoading, isAuthPage]);
+  }, [isCheckUserError, isCheckUserSuccess, data, isAuthLoading, isAuthPages]);
 
   const value: IAuthContext = useMemo(
     () => ({
