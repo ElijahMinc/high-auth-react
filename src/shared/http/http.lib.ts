@@ -1,3 +1,5 @@
+import { ErrorResponse } from './http.types';
+
 export const getQueryParams = (
   inputParams: Partial<Record<string, unknown>>
 ): string => {
@@ -25,3 +27,7 @@ export const getQueryParams = (
 
   return params.has.length ? `?${params.toString()}` : '';
 };
+
+export const isError = <T extends object>(
+  response: ErrorResponse | T
+): response is ErrorResponse => 'error' in response;

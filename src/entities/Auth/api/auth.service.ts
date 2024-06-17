@@ -7,10 +7,11 @@ import {
 import { toast } from 'react-toastify';
 import { Nullable } from '@shared/types/nullable.type';
 import { CrudService } from '@shared/http/crud.service';
-import { SuccessResponse } from '@shared/http/http.types';
+import { ErrorResponse, SuccessResponse } from '@shared/http/http.types';
 import { localStorageAccessTokenKey } from '@shared/http/http.api';
 
 import './auth.api';
+import { isError } from '@shared/http/http.lib';
 
 class AuthService extends CrudService {
   public uniqueName: string;
@@ -20,7 +21,7 @@ class AuthService extends CrudService {
     this.uniqueName = 'auth';
   }
 
-  async login(data: AuthRequest): Promise<Nullable<AuthResponse>> {
+  async login(data: AuthRequest): Promise<AuthResponse | ErrorResponse> {
     const routeParams = {};
 
     const response = await this.create<
@@ -28,8 +29,12 @@ class AuthService extends CrudService {
       SuccessResponse<AuthResponse>
     >(data, routeParams, '/login');
 
-    if ('error' in response) {
-      return null;
+    if (isError(response)) {
+      return {
+        error: true,
+        status: response.status,
+        message: response.message,
+      };
     }
 
     localStorage.setItem(localStorageAccessTokenKey, response.data.accessToken);
@@ -39,7 +44,7 @@ class AuthService extends CrudService {
 
   async loginByOAuthGoogle(
     data: Pick<AuthRequest, 'email'>
-  ): Promise<Nullable<AuthResponse>> {
+  ): Promise<AuthResponse | ErrorResponse> {
     const routeParams = {};
 
     const response = await this.create<
@@ -47,8 +52,12 @@ class AuthService extends CrudService {
       SuccessResponse<AuthResponse>
     >(data, routeParams, '/login-oauth-google');
 
-    if ('error' in response) {
-      return null;
+    if (isError(response)) {
+      return {
+        error: true,
+        status: response.status,
+        message: response.message,
+      };
     }
 
     localStorage.setItem(localStorageAccessTokenKey, response.data.accessToken);
@@ -57,7 +66,9 @@ class AuthService extends CrudService {
   }
 
   //!TODO Not completed; Don`t use it
-  async loginByOAuthGithub(code: string): Promise<Nullable<AuthResponse>> {
+  async loginByOAuthGithub(
+    code: string
+  ): Promise<AuthResponse | ErrorResponse> {
     const routeParams = {
       code,
     };
@@ -68,8 +79,12 @@ class AuthService extends CrudService {
       '/login-oauth-github'
     );
 
-    if ('error' in response) {
-      return null;
+    if (isError(response)) {
+      return {
+        error: true,
+        status: response.status,
+        message: response.message,
+      };
     }
 
     localStorage.setItem(localStorageAccessTokenKey, response.data.accessToken);
@@ -77,7 +92,7 @@ class AuthService extends CrudService {
     return response.data;
   }
 
-  async registration(data: AuthRequest): Promise<Nullable<AuthResponse>> {
+  async registration(data: AuthRequest): Promise<AuthResponse | ErrorResponse> {
     const routeParams = {};
 
     const response = await this.create<
@@ -85,8 +100,12 @@ class AuthService extends CrudService {
       SuccessResponse<AuthResponse>
     >(data, routeParams, '/registration');
 
-    if ('error' in response) {
-      return null;
+    if (isError(response)) {
+      return {
+        error: true,
+        status: response.status,
+        message: response.message,
+      };
     }
 
     localStorage.setItem(localStorageAccessTokenKey, response.data.accessToken);
@@ -94,7 +113,9 @@ class AuthService extends CrudService {
     return response.data;
   }
 
-  async forgotPassword(data: { email: AuthRequest['email'] }) {
+  async forgotPassword(data: {
+    email: AuthRequest['email'];
+  }): Promise<AuthResponse | ErrorResponse> {
     const routeParams = {};
 
     const response = await this.create<
@@ -102,23 +123,12 @@ class AuthService extends CrudService {
       SuccessResponse<AuthResponse>
     >(data, routeParams, '/forgot-password');
 
-    toast.success(response.message);
-
-    return response;
-  }
-
-  async resetPassword({ accessLink, newPassword }: ResetPasswordRequest) {
-    const routeParams = {};
-
-    const response = await this.create<
-      Pick<ResetPasswordRequest, 'newPassword'>,
-      SuccessResponse<IUser>
-    >({ newPassword }, routeParams, `/reset-password/${accessLink}`);
-
-    if ('error' in response) {
-      toast.error(response.message);
-
-      return null;
+    if (isError(response)) {
+      return {
+        error: true,
+        status: response.status,
+        message: response.message,
+      };
     }
 
     toast.success(response.message);
@@ -126,7 +136,35 @@ class AuthService extends CrudService {
     return response.data;
   }
 
-  async checkValidateUserByJWT(accessToken: Nullable<string>) {
+  async resetPassword({
+    accessLink,
+    newPassword,
+  }: ResetPasswordRequest): Promise<IUser | ErrorResponse> {
+    const routeParams = {};
+
+    const response = await this.create<
+      Pick<ResetPasswordRequest, 'newPassword'>,
+      SuccessResponse<IUser>
+    >({ newPassword }, routeParams, `/reset-password/${accessLink}`);
+
+    if (isError(response)) {
+      toast.error(response.message);
+
+      return {
+        error: true,
+        status: response.status,
+        message: response.message,
+      };
+    }
+
+    toast.success(response.message);
+
+    return response.data;
+  }
+
+  async checkValidateUserByJWT(
+    accessToken: Nullable<string>
+  ): Promise<IUser | ErrorResponse> {
     const routeParams = {};
 
     const response = await this.get<SuccessResponse<IUser>>(
@@ -140,28 +178,38 @@ class AuthService extends CrudService {
       }
     );
 
-    if ('error' in response) {
-      return null;
+    if (isError(response)) {
+      return {
+        error: true,
+        status: response.status,
+        message: response.message,
+      };
     }
 
-    return response;
+    return response.data;
   }
 
-  async refreshTokens() {
+  async refreshTokens(): Promise<
+    { accessToken: string; refreshToken: string } | ErrorResponse
+  > {
     const routeParams = {};
 
     const response = await this.get<
       SuccessResponse<{ accessToken: string; refreshToken: string }>
     >(routeParams, '/refresh');
 
-    if ('error' in response) {
-      return null;
+    if (isError(response)) {
+      return {
+        error: true,
+        status: response.status,
+        message: response.message,
+      };
     }
 
     return response.data;
   }
 
-  async logout() {
+  async logout(): Promise<Nullable<ErrorResponse>> {
     const routeParams = {};
 
     const response = await this.get<SuccessResponse<null>>(
@@ -169,15 +217,17 @@ class AuthService extends CrudService {
       '/logout'
     );
 
-    if ('error' in response) {
+    if (isError(response)) {
       toast.error(response.message);
 
-      return null;
+      return {
+        error: true,
+        status: response.status,
+        message: response.message,
+      };
     }
 
     localStorage.removeItem(localStorageAccessTokenKey);
-
-    toast.success(response.message);
 
     return response.data;
   }

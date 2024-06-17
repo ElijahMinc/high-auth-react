@@ -21,7 +21,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
 
   const {
     checkUserByJWTQuery: {
-      data,
+      data: userData,
       isLoading: isCheckUserLoading,
       isFetching: isCheckUserFetching,
       isError: isCheckUserError,
@@ -65,13 +65,17 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
       return;
     }
 
-    if (!data) return;
+    if (!userData || 'error' in userData) return;
 
-    const { data: user } = data;
-
-    setUser(user);
+    setUser(userData);
     setAuth(true);
-  }, [isCheckUserError, isCheckUserSuccess, data, isAuthLoading, isAuthPages]);
+  }, [
+    isCheckUserError,
+    isCheckUserSuccess,
+    userData,
+    isAuthLoading,
+    isAuthPages,
+  ]);
 
   const value: IAuthContext = useMemo(
     () => ({

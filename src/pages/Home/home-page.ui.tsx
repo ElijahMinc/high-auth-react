@@ -1,9 +1,9 @@
-import { Button } from '@shared/index';
-import styles from './home-styles.module.css';
 import { useAuth } from '@entities/Auth/lib/hooks/useAuth';
+import { LogoutButton } from '@features/Auth/LogoutButton/logout-button.ui';
+import styles from './home-styles.module.css';
 
 export const HomePage = () => {
-  const { user, logout } = useAuth();
+  const { user } = useAuth();
 
   return (
     <div className={styles.wrapper}>
@@ -11,9 +11,7 @@ export const HomePage = () => {
 
       <div className={styles.actions}>
         <div className={styles.btns}>
-          <Button appearance="primary" onClick={logout}>
-            Logout
-          </Button>
+          <LogoutButton text="Logout" />
         </div>
       </div>
     </div>

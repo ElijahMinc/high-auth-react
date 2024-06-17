@@ -9,16 +9,12 @@ $authApi.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (
-      isAxiosError(error) &&
-      error.response?.status === 401 &&
-      !_isRetry
-    ) {
+    if (isAxiosError(error) && error.response?.status === 401 && !_isRetry) {
       _isRetry = true;
 
       try {
         const data = await authService.refreshTokens();
-        if (!data) return;
+        if ('error' in data) return;
 
         localStorage.setItem(localStorageAccessTokenKey, data.accessToken);
 

@@ -5,13 +5,14 @@ import {
   useRegistrationMutation,
 } from '@entities/Auth/api/auth.queries';
 import { AuthForm } from '@features/Auth/AuthForm/auth-form.ui';
-import { AuthRequest } from '@entities/Auth/api/auth.types';
+import { AuthRequest, AuthResponse } from '@entities/Auth/api/auth.types';
 import { toast } from 'react-toastify';
 import { useAuth } from '@entities/Auth/lib/hooks/useAuth';
 import { ROUTER_PATHS } from '@shared/lib/react-router/config';
 import { Nullable } from '@shared/types/nullable.type';
 import { GoogleAuth } from '@features/Auth/GoogleAuth/googe-auth.ui';
 import { IThirdPartyAuth } from '@features/Auth/AuthForm/auth-form.types';
+import { isError } from '@shared/http/http.lib';
 
 export const AuthFormW = () => {
   const [params] = useSearchParams();
@@ -45,7 +46,8 @@ export const AuthFormW = () => {
     const res =
       currentPage === 'signin' ? await loginFn(data) : await registerFn(data);
 
-    if (!res) {
+    if (isError(res)) {
+      toast.error(res.message);
       return;
     }
 
@@ -57,8 +59,8 @@ export const AuthFormW = () => {
   const onSubmitGoogle = async (data: Pick<AuthRequest, 'email'>) => {
     const res = await loginByOAuthGoogleFn(data);
 
-    if (!res) {
-      toast.error('Something went wrong');
+    if (isError(res)) {
+      toast.error(res.message);
 
       return;
     }

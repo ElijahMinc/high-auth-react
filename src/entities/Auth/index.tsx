@@ -8,7 +8,7 @@ export interface IAuthContext {
   setAuth: (status: boolean) => void;
   user: Nullable<IUser>;
   setUser: (user: Nullable<IUser>) => void;
-  logout: () => void;
+  logout: () => Promise<void>;
   isAuthLoading: boolean;
 }
 
@@ -17,6 +17,6 @@ export const AuthContext = createContext<IAuthContext>({
   setAuth: () => {},
   user: null,
   setUser: () => {},
-  logout: () => {},
+  logout: async () => {},
   isAuthLoading: false,
 });

@@ -7,8 +7,6 @@ import { getGoogleCredentialsByAccessToken } from '@entities/Auth/api/auth.queri
 export const GoogleAuth = ({ handleSubmit }: IGoogleProps) => {
   const login = useGoogleLogin({
     onSuccess: async (tokenResponse) => {
-      console.log(tokenResponse);
-
       const userInfo = await getGoogleCredentialsByAccessToken(
         tokenResponse.access_token
       );
