@@ -17,7 +17,7 @@ import { isError } from '@shared/http/http.lib';
 export const AuthFormW = () => {
   const [params] = useSearchParams();
   const navigate = useNavigate();
-  const { setAuth } = useAuth();
+  const { setAuth, setUser } = useAuth();
 
   const currentPage = params.get('page') as Nullable<'signin' | 'signup'>;
 
@@ -53,6 +53,7 @@ export const AuthFormW = () => {
 
     toast.success('You have successfully logged in');
     setAuth(true);
+    setUser(res.user);
     navigate(ROUTER_PATHS.HOME, { replace: true });
   };
 
@@ -67,6 +68,7 @@ export const AuthFormW = () => {
 
     toast.success('You have successfully logged in');
     setAuth(true);
+    setUser(res.user);
     navigate(ROUTER_PATHS.HOME, { replace: true });
   };
 
