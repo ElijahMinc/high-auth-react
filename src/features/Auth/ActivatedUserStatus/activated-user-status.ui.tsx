@@ -4,8 +4,8 @@ import styles from './activated-user-status-styles.module.css';
 
 export const ActivatedUserStatus = ({ status }: ActivatedUserStatusProps) => {
   const text = {
-    active: 'The account was successfully activated',
-    ['non-active']: 'Please, activate your account',
+    active: 'The account was successfully verified',
+    ['non-active']: 'Please, verify your account',
   };
 
   return (
