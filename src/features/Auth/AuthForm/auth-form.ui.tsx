@@ -1,3 +1,4 @@
+import React from 'react';
 import { ISignInFormProps } from './auth-form.types';
 import {
   signInFormDefaultValues,
@@ -12,7 +13,6 @@ import { AuthRequest } from '@entities/Auth/api/auth.types';
 import { PasswordField } from '@entities/PasswordField';
 
 import styles from './auth-form-styles.module.css';
-import React from 'react';
 
 export const AuthForm = ({
   handleSubmit,
@@ -36,7 +36,7 @@ export const AuthForm = ({
     },
     schema: signInFormSchema,
     initialValues: signInFormDefaultValues,
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
   }) as any;
 
   const titleText =
@@ -93,11 +93,10 @@ export const AuthForm = ({
         appearance="primary"
         disabled={isDisabledSubmitBtn}
       >
-        Sign in
+        Submit
       </Button>
 
       <div className={styles.signUp}>
-        Is your company new to Qencode?
         <Link
           to={
             location.pathname +
