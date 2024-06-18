@@ -10,7 +10,7 @@ export const LogoutButton = ({ text }: LogoutButtonProps) => {
 
   const handleLogout = async () => {
     await logout();
-    navigate(`/${ROUTER_PATHS.AUTH}?page=sigin`, { replace: true });
+    navigate(`/${ROUTER_PATHS.AUTH}?page=signin`, { replace: true });
   };
 
   return (
