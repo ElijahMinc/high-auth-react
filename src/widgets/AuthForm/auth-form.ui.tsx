@@ -5,7 +5,7 @@ import {
   useRegistrationMutation,
 } from '@entities/Auth/api/auth.queries';
 import { AuthForm } from '@features/Auth/AuthForm/auth-form.ui';
-import { AuthRequest, AuthResponse } from '@entities/Auth/api/auth.types';
+import { AuthRequest } from '@entities/Auth/api/auth.types';
 import { toast } from 'react-toastify';
 import { useAuth } from '@entities/Auth/lib/hooks/useAuth';
 import { ROUTER_PATHS } from '@shared/lib/react-router/config';
