@@ -2,6 +2,8 @@ export interface IUser {
   id: string;
   email: string;
   password: string;
+
+  isActivated: boolean;
 }
 
 export interface AuthRequest extends Omit<IUser, 'id'> {}

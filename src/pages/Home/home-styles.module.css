@@ -7,12 +7,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
+  flex-direction: column;
+
+  gap: 50px;
 }
 .btns {
   display: flex;
   flex-direction: column;
 
   flex: 0 1 250px;
+  max-width: 250px;
+  width: 100%;
 
 }
 

@@ -5,6 +5,7 @@ import { homePageRoute } from '@pages/Home';
 import {
   RouterProvider,
   createBrowserRouter,
+  redirect,
   useRouteError,
 } from 'react-router-dom';
 import { authRoutePageRoute } from '@pages/Auth';
@@ -37,10 +38,10 @@ const router = createBrowserRouter([
           forgotPasswordPageRoute,
         ],
       },
-      // {
-      //   loader: async () => redirect(pathKeys.page404()),
-      //   path: '*',
-      // },
+      {
+        loader: async () => redirect(ROUTER_PATHS.AUTH),
+        path: '*',
+      },
     ],
   },
 ]);
