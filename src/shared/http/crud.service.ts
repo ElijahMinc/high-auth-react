@@ -3,7 +3,7 @@ import { HttpRequest } from '@shared/http/http.service';
 import { AxiosRequestConfig } from 'axios';
 
 class CrudService {
-  protected httpRequest: HttpRequest;
+  public httpRequest: HttpRequest;
 
   constructor(path: string) {
     this.httpRequest = new HttpRequest(path);

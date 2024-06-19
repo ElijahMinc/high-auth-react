@@ -115,7 +115,7 @@ export const useLogoutQuery = ({
   isEnabled: boolean;
 }) => {
   const logout = useQuery({
-    queryKey: ['user'],
+    queryKey: ['auth', 'logout'],
     queryFn: async () => await authService.logout(),
     enabled: isEnabled,
   });

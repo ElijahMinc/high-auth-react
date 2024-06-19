@@ -9,16 +9,59 @@ import { Nullable } from '@shared/types/nullable.type';
 import { CrudService } from '@shared/http/crud.service';
 import { ErrorResponse, SuccessResponse } from '@shared/http/http.types';
 import { localStorageAccessTokenKey } from '@shared/http/http.api';
-
-import './auth.api';
 import { isError } from '@shared/http/http.lib';
+import { isAxiosError } from 'axios';
 
 class AuthService extends CrudService {
   public uniqueName: string;
 
+  _isRetry = false;
+
   constructor() {
     super('auth');
     this.uniqueName = 'auth';
+
+    this.setup();
+  }
+
+  private setup() {
+    this.httpRequest.$api.interceptors.response.use(
+      (res) => res,
+      async (error) => {
+        const originalRequest = error.config;
+
+        if (
+          isAxiosError(error) &&
+          error.response?.status === 401 &&
+          !this._isRetry
+        ) {
+          this._isRetry = true;
+
+          try {
+            const data = await this.refreshTokens();
+            if ('error' in data) return;
+
+            localStorage.setItem(localStorageAccessTokenKey, data.accessToken);
+
+            originalRequest.headers.set(
+              'Authorization',
+              `Bearer ${data.accessToken}`
+            );
+
+            return this.httpRequest.$api.request(originalRequest);
+          } catch (e) {
+            const res = await this.logout();
+            if (!res) return;
+
+            localStorage.removeItem(localStorageAccessTokenKey);
+
+            return Promise.reject(e);
+          }
+        }
+
+        return Promise.reject(error);
+      }
+    );
   }
 
   async login(data: AuthRequest): Promise<AuthResponse | ErrorResponse> {
@@ -174,7 +217,6 @@ class AuthService extends CrudService {
         headers: {
           Authorization: 'Bearer ' + accessToken,
         },
-        withCredentials: true,
       }
     );
 
@@ -211,7 +253,6 @@ class AuthService extends CrudService {
 
   async logout(): Promise<Nullable<ErrorResponse>> {
     const routeParams = {};
-
     const response = await this.get<SuccessResponse<null>>(
       routeParams,
       '/logout'
