@@ -31,3 +31,9 @@ export const getQueryParams = (
 export const isError = <T extends object>(
   response: ErrorResponse | T
 ): response is ErrorResponse => 'error' in response;
+
+export const getErrorResponse = (response: ErrorResponse) => ({
+  error: true,
+  status: response.status,
+  message: response.message,
+});

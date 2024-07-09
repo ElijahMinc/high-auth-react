@@ -4,6 +4,7 @@ import { AxiosRequestConfig } from 'axios';
 
 class CrudService {
   public httpRequest: HttpRequest;
+  static unauthorizedStatusCode = 401;
 
   constructor(path: string) {
     this.httpRequest = new HttpRequest(path);

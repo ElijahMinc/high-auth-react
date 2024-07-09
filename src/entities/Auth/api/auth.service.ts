@@ -9,13 +9,13 @@ import { Nullable } from '@shared/types/nullable.type';
 import { CrudService } from '@shared/http/crud.service';
 import { ErrorResponse, SuccessResponse } from '@shared/http/http.types';
 import { localStorageAccessTokenKey } from '@shared/http/http.api';
-import { isError } from '@shared/http/http.lib';
+import { getErrorResponse, isError } from '@shared/http/http.lib';
 import { isAxiosError } from 'axios';
 
 class AuthService extends CrudService {
   public uniqueName: string;
 
-  _isRetry = false;
+  _isRetryIfAccessTokenIsExpired = false;
 
   constructor() {
     super('auth');
@@ -32,10 +32,10 @@ class AuthService extends CrudService {
 
         if (
           isAxiosError(error) &&
-          error.response?.status === 401 &&
-          !this._isRetry
+          error.response?.status === CrudService.unauthorizedStatusCode &&
+          !this._isRetryIfAccessTokenIsExpired
         ) {
-          this._isRetry = true;
+          this._isRetryIfAccessTokenIsExpired = true;
 
           try {
             const data = await this.refreshTokens();
@@ -73,11 +73,7 @@ class AuthService extends CrudService {
     >(data, routeParams, '/login');
 
     if (isError(response)) {
-      return {
-        error: true,
-        status: response.status,
-        message: response.message,
-      };
+      return getErrorResponse(response);
     }
 
     localStorage.setItem(localStorageAccessTokenKey, response.data.accessToken);
@@ -96,11 +92,7 @@ class AuthService extends CrudService {
     >(data, routeParams, '/login-oauth-google');
 
     if (isError(response)) {
-      return {
-        error: true,
-        status: response.status,
-        message: response.message,
-      };
+      return getErrorResponse(response);
     }
 
     localStorage.setItem(localStorageAccessTokenKey, response.data.accessToken);
@@ -123,11 +115,7 @@ class AuthService extends CrudService {
     );
 
     if (isError(response)) {
-      return {
-        error: true,
-        status: response.status,
-        message: response.message,
-      };
+      return getErrorResponse(response);
     }
 
     localStorage.setItem(localStorageAccessTokenKey, response.data.accessToken);
@@ -144,11 +132,7 @@ class AuthService extends CrudService {
     >(data, routeParams, '/registration');
 
     if (isError(response)) {
-      return {
-        error: true,
-        status: response.status,
-        message: response.message,
-      };
+      return getErrorResponse(response);
     }
 
     localStorage.setItem(localStorageAccessTokenKey, response.data.accessToken);
@@ -167,11 +151,7 @@ class AuthService extends CrudService {
     >(data, routeParams, '/forgot-password');
 
     if (isError(response)) {
-      return {
-        error: true,
-        status: response.status,
-        message: response.message,
-      };
+      return getErrorResponse(response);
     }
 
     toast.success(response.message);
@@ -193,11 +173,7 @@ class AuthService extends CrudService {
     if (isError(response)) {
       toast.error(response.message);
 
-      return {
-        error: true,
-        status: response.status,
-        message: response.message,
-      };
+      return getErrorResponse(response);
     }
 
     toast.success(response.message);
@@ -221,11 +197,7 @@ class AuthService extends CrudService {
     );
 
     if (isError(response)) {
-      return {
-        error: true,
-        status: response.status,
-        message: response.message,
-      };
+      return getErrorResponse(response);
     }
 
     return response.data;
@@ -241,11 +213,7 @@ class AuthService extends CrudService {
     >(routeParams, '/refresh');
 
     if (isError(response)) {
-      return {
-        error: true,
-        status: response.status,
-        message: response.message,
-      };
+      return getErrorResponse(response);
     }
 
     return response.data;
@@ -261,11 +229,7 @@ class AuthService extends CrudService {
     if (isError(response)) {
       toast.error(response.message);
 
-      return {
-        error: true,
-        status: response.status,
-        message: response.message,
-      };
+      return getErrorResponse(response);
     }
 
     localStorage.removeItem(localStorageAccessTokenKey);
