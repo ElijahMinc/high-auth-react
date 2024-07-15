@@ -5,6 +5,7 @@ import {
 } from '@entities/Auth/api/auth.queries';
 import { IUser } from '@entities/Auth/api/auth.types';
 import { localStorageAccessTokenKey } from '@shared/http/http.api';
+import { queryClient } from '@shared/lib';
 import { ROUTER_PATHS } from '@shared/lib/react-router/config';
 import { Nullable } from '@shared/types/nullable.type';
 import { useEffect, useMemo, useState } from 'react';
@@ -51,6 +52,7 @@ export const AuthProvider = ({ children }: React.PropsWithChildren) => {
 
   const logout = async () => {
     await logoutFn();
+    queryClient.removeQueries({ queryKey: ['checkUser'] });
     setUser(null);
     setAuth(false);
   };
