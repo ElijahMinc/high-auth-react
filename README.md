@@ -1,12 +1,10 @@
-**\*Цей додаток вирішив написати, використовуючи **FSD-архітектуру**. Нижче напишу короткий її опис.\***
+# FSD Architecture
 
-# FSD Архітектура
-
-# Опис
+# Description
 
 FSD (Feature-Sliced Design) is an architectural approach for organizing code in JavaScript/TypeScript projects, aimed at improving the maintainability and scalability of large applications. FSD focuses on dividing the project into clearly defined, functionally independent parts.
 
-# Основні Принципи
+# Main Principles
 
 - **Modularity**: The application is divided into autonomous modules, each performing a specific function or group of functions.
 
@@ -16,9 +14,9 @@ FSD (Feature-Sliced Design) is an architectural approach for organizing code in 
 
 - **Code Cleanliness**: Using clear and understandable principles for naming and structuring code.
 
-# Структура Проєкту
+# Project Structure
 
-## Головні Layers:
+## Main Layers:
 
 - **app**: The main module of the application, which includes global settings, configurations, and common components.
 
